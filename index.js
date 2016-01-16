@@ -4,19 +4,31 @@ const fs 		   = require('fs');
 const csvStringify = require('csv-stringify');
 const yql 		   = require('yql');
 
-var symbols_json   = require('./symbols.json');
+const td_list	   = require('./td_list.json');
+const stock_list   = require('./stock_list.json');
 
 async.parallel([
-	function(callback) {
-		yahooFinance.snapshot({
-		  	symbols: symbols_json,
+	function updateYahooFinance(callback) {
+		var stock_symbols = [];
 
+		// Create stock symbol list from stock file
+		for(var i=0; i<stock_list.length; i++)
+			stock_symbols.push(stock_list[i].symbol);
+
+		yahooFinance.snapshot({
+		  	symbols: stock_symbols,
 		  	fields: ['s', 'd1', 'l1']  // ex: ['s', 'n', 'd1', 'l1', 'y', 'r']
 		}, function (err, snapshot) {
 		  	if(err)
 		  		callback(err);
-		  	else
+		  	else {
+		  		// Remove '.SA' from symbols
+				for(var i=0; i<snapshot.length; i++) {
+					snapshot[i].symbol = snapshot[i].symbol.replace('.SA', '');
+				}
+
 		  		callback(null, snapshot);
+		  	}
 		});	
 	},
 
@@ -32,7 +44,11 @@ async.parallel([
 			.setParam('xpath', xpath);
 
 		query_yql.exec(function(err, response) {
-			// console.log(response.query.results.tbody.tr);
+			if(err) {
+				callback(err);
+				return;
+			}
+
 			var table = response.query.results.tbody.tr;
 			var response_filtered = [];
 
@@ -43,6 +59,7 @@ async.parallel([
 
 			var td_line;
 			var price_string;
+			var name_string;
 			var price_float;
 
 			for(var i=0; i<table.length; i++) {
@@ -54,21 +71,23 @@ async.parallel([
 					else
 						price_string = td_line.td[indexPriceSecondary].content;
 
-					// Remove 'R$' from price (first two characters)
+					// Remove 'R$' from price
 					price_string = price_string.replace('R$', '');
 
-					// Remove point if it exists
+					// // Remove point if it exists
 					price_string = price_string.replace('.', '');
 
-					// Replace comma with point
+					// // Replace comma with point
 					price_string = price_string.replace(',', '.');
 
 					price_float = parseFloat(price_string);
 
+					name_string = td_line.td[indexName].content;
+
 					response_filtered.push({
-						'symbol'		: td_line.td[indexName].content,
+						'symbol'		: name_string,
 						'lastTradeDate'	: '',
-						'lastTradePrice': price_float
+						'lastTradePriceOnly': price_float
 					});
 				}
 			}
@@ -86,9 +105,11 @@ async.parallel([
 			return;
 		}
 		else {
+			var prices_combined = raw_data[0].concat(raw_data[1]);
+
 			async.waterfall([
 				function(callback) {
-					createCSV(raw_data[0], function(err, csv) { // TODO CHANGE results[0]
+					createCSV(prices_combined, function(err, csv) {
 						if(err)
 							callback(err);
 						else
