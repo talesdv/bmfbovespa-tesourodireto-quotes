@@ -13,18 +13,20 @@ async.parallel([
 
 		// Create stock symbol list from stock file
 		for(var i=0; i<stock_list.length; i++)
-			stock_symbols.push(stock_list[i].symbol);
+			stock_symbols.push(stock_list[i].symbol_in);
 
 		yahooFinance.snapshot({
 		  	symbols: stock_symbols,
-		  	fields: ['s', 'd1', 'l1']  // ex: ['s', 'n', 'd1', 'l1', 'y', 'r']
+		  	fields: ['s', 'n', 'd1', 'l1']  // ex: ['s', 'n', 'd1', 'l1', 'y', 'r']
 		}, function (err, snapshot) {
 		  	if(err)
 		  		callback(err);
 		  	else {
-		  		// Remove '.SA' from symbols
+		  		// Get name from stock list, convert timestamp to date and delete symbol
 				for(var i=0; i<snapshot.length; i++) {
-					snapshot[i].symbol = snapshot[i].symbol.replace('.SA', '');
+					snapshot[i].name = mapSymbolIn2Out(snapshot[i].symbol, stock_list);
+					delete snapshot[i].symbol;
+					snapshot[i].lastTradeDate = timestampToDateString(snapshot[i].lastTradeDate);
 				}
 
 		  		callback(null, snapshot);
@@ -59,6 +61,7 @@ async.parallel([
 
 			var td_line;
 			var price_string;
+			var symbol_string;
 			var name_string;
 			var price_float;
 
@@ -66,7 +69,7 @@ async.parallel([
 				if(table[i].class == filterElementClass) {
 					td_line = table[i];
 
-					if(td_line.td[indexPricePrimary].content != 'R$0,00')
+					if(td_line.td[indexPricePrimary].content.indexOf('R$0,00') == -1)
 						price_string = td_line.td[indexPricePrimary].content;
 					else
 						price_string = td_line.td[indexPriceSecondary].content;
@@ -82,13 +85,18 @@ async.parallel([
 
 					price_float = parseFloat(price_string);
 
-					name_string = td_line.td[indexName].content;
+					symbol_string = td_line.td[indexName].content;
 
-					response_filtered.push({
-						'symbol'		: name_string,
-						'lastTradeDate'	: '',
-						'lastTradePriceOnly': price_float
-					});
+					name_string = mapSymbolIn2Out(symbol_string, td_list);
+
+					// If not found, don't need to push this object
+					if(name_string != -1) {
+						response_filtered.push({
+							'name'				: name_string,
+							'lastTradeDate'		: '',
+							'lastTradePriceOnly': price_float
+						});
+					}
 				}
 			}
 
@@ -137,21 +145,38 @@ async.parallel([
 	}
 );
 
+function mapSymbolIn2Out(symbol, list) {
+	for(var i=0; i<list.length; i++) {
+		if(list[i].symbol_in.indexOf(symbol) != -1)
+			return list[i].symbol_out;
+	}
 
-
-function refactorCSV() {
-	// Convert timestamp
-	// Remove .SA
-};
+	// Not found
+	return -1;
+}
 
 function createCSV(data, callback) {
-	console.log(data);
-	csvStringify(data, function(err, csv) {
+	csvStringify(data, { 
+		'quoted' : true,
+		'columns': [
+			'name',
+			'lastTradePriceOnly',
+			'lastTradeDate'
+		]}, function(err, csv) {
 		if(err)
 			callback(err);
 		else
 			callback(null, csv);
 	});
+};
+
+function timestampToDateString(timestamp) {
+	var date = new Date(timestamp);
+
+	var date_string = '';
+	date_string = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+
+	return date_string;
 };
 
 function writeToFile(data, path, file_name, callback) {
