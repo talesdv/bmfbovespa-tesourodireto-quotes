@@ -1,0 +1,10 @@
+[
+	{
+		"symbol_in"  : "ABEV3.SA",
+		"symbol_out" : "ABEV3"
+	},
+	{
+		"symbol_in"  : "BBAS3.SA",
+		"symbol_out" : "BBAS3"
+	}
+]
