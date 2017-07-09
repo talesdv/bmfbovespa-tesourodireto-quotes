@@ -1,0 +1,30 @@
+{
+  "name": "update-quotes",
+  "version": "1.0.0",
+  "description": "Update Tesouro Direto and Stock quotes",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.3.0",
+    "cheerio": "^1.0.0-rc.2",
+    "csv-stringify": "^1.0.4",
+    "yahoo-finance": "^0.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talesdv/bmfbovespa-tesourodireto-quotes.git"
+  },
+  "keywords": [
+    "tesouro_direto",
+    "stock"
+  ],
+  "author": "Tales Vecchia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talesdv/bmfbovespa-tesourodireto-quotes/issues"
+  },
+  "homepage": "https://github.com/talesdv/bmfbovespa-tesourodireto-quotes#readme"
+}
