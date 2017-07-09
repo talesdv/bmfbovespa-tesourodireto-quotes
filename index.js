@@ -37,27 +37,7 @@ async.parallel([
 
 			console.log(quotes_array);
 			callback(err, quotes_array);
-		});
-
-		// yahooFinance.snapshot({
-		//   	symbols: stock_symbols,
-		//   	fields: ['s', 'n', 'p', 'a']  // ex: ['s', 'n', 'd1', 'l1', 'y', 'r']
-		// }, function (err, snapshot) {
-		//   	request
-
-		//   	if(err)
-		//   		callback(err);
-		//   	else {
-		//   		// Get name from stock list, convert timestamp to date and delete symbol
-		// 		for(var i=0; i<snapshot.length; i++) {
-		// 			snapshot[i].name = mapSymbolIn2Out(snapshot[i].symbol, stock_list);
-		// 			delete snapshot[i].symbol;
-		// 			snapshot[i].lastTradeDate = timestampToDateString(snapshot[i].lastTradeDate);
-		// 		}
-
-		//   		callback(null, snapshot);
-		//   	}
-		// });	
+		});	
 	},
 
 	function updateFromTD(callback) {
@@ -114,74 +94,6 @@ async.parallel([
 				callback(null, response_filtered);
 			});
 		});
-
-		// var query = 'select * from html where (url = @url) and (xpath = @xpath)';
-		// var base_url = 'http://www3.tesouro.gov.br/tesouro_direto/consulta_titulos_novosite/consultatitulos.asp';
-
-		// // XPATH should be: //*[@id="p_p_id_precosetaxas_WAR_tesourodiretoportlet_"]/div/div/div/table[2]/tbody
-		// var xpath = '/html/body/table/tbody/tr/td[1]/table/tbody/tr/td[2]/center/table/tbody'
-
-		// var query_yql = new yql(query)
-		// 	.setParam('url', base_url)
-		// 	.setParam('xpath', xpath);
-
-		// query_yql.exec(function(err, response) {
-		// 	if(err) {
-		// 		callback(err);
-		// 		return;
-		// 	}
-
-		// 	var table = response.query.results.tbody.tr;
-		// 	var response_filtered = [];
-
-		// 	const filterElementClass  = 'listing0';
-		// 	const indexPricePrimary	  = 4;
-		// 	const indexPriceSecondary = 5;
-		// 	const indexName			  = 0;
-
-		// 	var td_line;
-		// 	var price_string;
-		// 	var symbol_string;
-		// 	var name_string;
-		// 	var price_float;
-			
-		// 	for(var i=0; i<table.length; i++) {
-		// 		td_line = table[i];
-
-		// 		if(td_line.td && Array.isArray(td_line.td) && td_line.td[0].class.indexOf(filterElementClass) != -1) {
-		// 			if(td_line.td[indexPricePrimary].content != null)
-		// 				price_string = td_line.td[indexPricePrimary].content;
-		// 			else
-		// 				price_string = td_line.td[indexPriceSecondary].content;
-
-		// 			// Remove 'R$' from price
-		// 			price_string = price_string.replace('R$', '');
-
-		// 			// // Remove point if it exists
-		// 			price_string = price_string.replace('.', '');
-
-		// 			// // Replace comma with point
-		// 			price_string = price_string.replace(',', '.');
-
-		// 			price_float = parseFloat(price_string);
-
-		// 			symbol_string = td_line.td[indexName].content;
-
-		// 			name_string = mapSymbolIn2Out(symbol_string, td_list);
-
-		// 			// If not found, don't need to push this object
-		// 			if(name_string != -1) {
-		// 				response_filtered.push({
-		// 					'name'				: name_string,
-		// 					'lastTradeDate'		: '',
-		// 					'lastTradePriceOnly': price_float
-		// 				});
-		// 			}
-		// 		}
-		// 	}
-
-			// callback(null, null);
-		// });
 	}
 
 	],
