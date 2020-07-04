@@ -3,7 +3,6 @@ const async	       = require('async');
 const fs 		   = require('fs');
 const csvStringify = require('csv-stringify');
 const http		   = require('https');
-const cheerio 	   = require('cheerio');
 
 const td_list	   = require('./td_list.json');
 const stock_list   = require('./stock_list.json');
