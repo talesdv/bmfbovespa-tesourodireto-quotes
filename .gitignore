@@ -1,0 +1,7 @@
+node_modules
+
+stock_list.json
+td_list.json
+prices.csv
+
+.vscode
