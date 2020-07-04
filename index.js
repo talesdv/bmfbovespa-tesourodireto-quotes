@@ -53,7 +53,7 @@ async.parallel([
 
 						return {
 							name: mapSymbolIn2Out(tdRaw.nm, td_list),
-							lastTradePriceOnly: tdRaw.untrInvstmtVal
+							lastTradePriceOnly: tdRaw.untrRedVal
 						}
 					})
 					.filter((element) => element.name !== -1 && element.lastTradePriceOnly > 0);
