@@ -4,7 +4,7 @@
   "description": "Update Tesouro Direto and Stock quotes",
   "main": "index.js",
   "dependencies": {
-    "async": "^2.3.0",
+    "async": "^2.6.4",
     "csv-stringify": "^1.0.4",
     "yahoo-finance": "^0.3.2"
   },
