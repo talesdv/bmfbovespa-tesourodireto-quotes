@@ -1,15 +1,22 @@
 {
   "name": "update-quotes",
-  "version": "1.0.0",
-  "description": "Update Tesouro Direto and Stock quotes",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Generic and combined data fetcher for bond, stock, fii/reit, index and crypto market quotes.",
+  "main": "dist/index.js",
   "dependencies": {
+    "@sweet-monads/either": "^3.0.1",
     "async": "^2.3.0",
-    "csv-stringify": "^1.0.4",
-    "yahoo-finance": "^0.3.2"
+    "colors": "^1.4.0",
+    "csv-stringify": "^6.0.5",
+    "yahoo-finance": "^0.3.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4"
+  },
   "scripts": {
+    "start": "ts-node --files src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
