@@ -1,7 +1,9 @@
 node_modules
 
-stock_list.json
-td_list.json
+# Config and default output files
 prices.csv
+/quoteConfig.json
 
-.vscode
+src/**/*.js
+
+**/.DS_Store

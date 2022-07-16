@@ -1,0 +1,62 @@
+[
+    {
+        "name": "IBOV",
+        "code": "^BVSP",
+        "type": "index"
+    },
+    {
+        "name": "IFIX",
+        "code": "IFIX.SA",
+        "type": "index"
+    },
+    {
+        "name": "BTC",
+        "code": "BTC-USD",
+        "type": "crypto",
+        "fxPair": "USDBRL"
+    },
+    {
+        "name": "ETH",
+        "code": "ETH-USD",
+        "type": "crypto",
+        "fxPair": "USDBRL"
+    },
+    {
+        "name": "ABEV3",
+        "code": "ABEV3.SA",
+        "type": "stock"
+    },
+    {
+        "name": "VALE3",
+        "code": "VALE3.SA",
+        "type": "stock"
+    },
+    {
+        "name": "BCFF11",
+        "code": "BCFF11.SA",
+        "type": "fii"
+    },
+    {
+        "name": "HGLG11",
+        "code": "HGLG11.SA",
+        "type": "fii"
+    },
+    {
+        "name": "DIS",
+        "type": "stock"
+    },
+    {
+        "name": "GOOG",
+        "type": "stock"
+    },
+    {
+        "name": "LFT2023",
+        "code": "Tesouro Selic 2023",
+        "type": "tesourodireto"
+    },
+    {
+        "name": "NTNBP2045",
+        "code": "Tesouro IPCA+ 2045",
+        "type": "tesourodireto"
+    }
+]
