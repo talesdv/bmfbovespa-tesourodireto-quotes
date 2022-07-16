@@ -2,7 +2,7 @@ node_modules
 
 # Config and default output files
 prices.csv
-quoteConfig.json
+/quoteConfig.json
 
 src/**/*.js
 
