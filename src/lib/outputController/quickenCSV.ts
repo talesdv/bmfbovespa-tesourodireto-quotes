@@ -33,9 +33,22 @@ export class QuickenCSV implements OutputController {
 }
 
 function toQuotesArray(quotes: SymbolPriceData[]) {
+  const locale = getSystemDateTimeLocale();
   return Object.values(quotes).map(({ name, price, date }) => [
     name,
     price,
-    date?.toLocaleDateString('en-US', { dateStyle: 'short' }),
+    date?.toLocaleDateString(locale, { dateStyle: "short" }),
   ]);
+}
+
+function getSystemDateTimeLocale() {
+  const lcTime = process.env.LC_TIME;
+  if (!lcTime) {
+    return;
+  }
+
+  const [rawLocale] = lcTime.split(".");
+  const bcp47Locale = rawLocale.replace("_", "-");
+
+  return bcp47Locale;
 }
